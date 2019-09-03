@@ -1,23 +1,40 @@
-import React from 'react';
+import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import './Person.css';
+import withClass from '../../../hoc/withClass';
 // import Radium from 'radium';
 
-const person = (props) => {
-    // const style= {
-    //     '@media (min-width: 500px)': {
-    //         width: '450px'
-    //     }
-    // }
+class Person extends Component {
+    constructor(props) {
+        super(props); 
+        this.inputElementRef = React.createRef();
+    }
 
-    return (
-        <div className="Person"
-         //style={style}
-         >
-            <p onClick={props.click}>I'm a {props.name} and I am { props.age } years old!</p>
-            <p>{props.children}</p>
-            <input type="text" onChange={props.changed} value={props.name}/>
-        </div>
-    )
+    componentDidMount(){
+        this.inputElementRef.current.focus()
+    }
+
+    render() {
+        return (
+            <Fragment>
+                <p onClick={this.props.click}>I'm a {this.props.name} and I am {this.props.age} years old!</p>
+                <p>{this.props.children}</p>
+                <input type="text"
+                    // ref={(inputEl) => { this.inputElement = inputEl }}
+                    ref={this.inputElementRef}
+                    onChange={this.props.changed}
+                    value={this.props.name} />
+            </Fragment>
+        )
+    }
+
 }
 
-export default person; //Radium(person);
+Person.propTypes = {
+    click: PropTypes.func,
+    name: PropTypes.string,
+    age: PropTypes.number,
+    changed: PropTypes.func
+};
+
+export default withClass(Person, ".Person");

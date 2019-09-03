@@ -1,7 +1,19 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
-const cockpit = (props) => {
+const Cockpit = (props) => {
 
+    const toggleButtonRef = useRef(null);
+
+    useEffect(() => {
+        console.log('[Cockpit.js] usesEffect');
+        toggleButtonRef.current.click();
+        // setTimeout(() => {
+        //     alert('Save data to cloud!');
+        // }, 1000)
+        return () => {
+            console.log('[Cockpit.js] cleanup workd in useEffect');
+        }
+    }, []);
 
     const style = {
         backgroundColor: 'green',
@@ -34,10 +46,10 @@ const cockpit = (props) => {
         <div>
             <h1>Hi, to my React proj</h1>
             <p className={assignedClasses.join(' ')}>This is really working!</p>
-            <button className={btnClass} style={style}
+            <button ref={toggleButtonRef} className={btnClass} style={style}
                 onClick={props.click}>Switch Name</button>
         </div>
     )
 };
 
-export default cockpit;
+export default Cockpit;

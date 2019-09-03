@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import './App.css';
 import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
-// import Radium, { StyleRoot } from 'radium';
+import withClass from '../hoc/withClass';
+import Aux from '../hoc/Auxiliary';
 
 class App extends Component {
   state = {
@@ -11,13 +12,18 @@ class App extends Component {
       { id: 'f6gdf456s6', name: "Max", age: 29 },
       { id: 'g4jhr676ra', name: "Stephanie", age: 26 }
     ],
-    showPersons: false
+    showPersons: false,
+    changeCounter: 0
   }
 
   deletePersonHandler = (personIndex) => {
     const persons = [...this.state.persons];
     persons.splice(personIndex, 1);
     this.setState({ persons: persons });
+  }
+
+  componentWillUnmount() {
+    console.log('[App.js] componentWillUnmunt');
   }
 
   nameChangedHandler = (event, id) => {
@@ -32,8 +38,11 @@ class App extends Component {
     const persons = [...this.state.persons];
     persons[personIndex] = person;
 
-    this.setState({
-      persons: persons
+    this.setState((prevState, props) => {
+      return {
+        persons: persons,
+        changeCounter: prevState.changeCounter + 1 
+      }
     })
   }
 
@@ -79,15 +88,15 @@ class App extends Component {
 
 
     return (
-      <div className="App">
+      <Aux>
         <Cockpit
           showPersons={this.state.showPersons}
           persons={this.state.persons}
           click={this.togglePersonsHandler} />
         {persons}
-      </div >
+      </Aux >
     );
   }
 }
 
-export default App; //Radium(App);
+export default withClass(App, ".App");
