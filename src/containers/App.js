@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
-import Person from '../components/Persons/Person/Person';
+import Persons from '../components/Persons/Persons';
+import Cockpit from '../components/Cockpit/Cockpit';
 // import Radium, { StyleRoot } from 'radium';
 
 class App extends Component {
@@ -63,15 +64,10 @@ class App extends Component {
     if (this.state.showPersons) {
       persons = (
         <div>
-          {this.state.persons.map((person, index) => {
-            return (<Person
-              click={() => this.deletePersonHandler(index)}
-              name={person.name}
-              age={person.age}
-              key={person.id}
-              changed={(event) => this.nameChangedHandler(event, person.id)} />
-            )
-          })}
+          <Persons
+            persons={this.state.persons}
+            clicked={this.deletePersonHandler}
+            changed={this.nameChangedHandler} />
         </div>
       );
       style.backgroundColor = 'red'
@@ -81,25 +77,15 @@ class App extends Component {
       }
     }
 
-    let classes = [];
-
-    if (this.state.persons.length <= 2) {
-      classes.push('red')
-    }
-    if (this.state.persons.length <= 1) {
-      classes.push('bold');
-    }
 
     return (
-      // <StyleRoot>
-        <div className="App">
-          <h1>Hi, to my React proj</h1>
-          <p className={classes.join(' ')}>This is really working!</p>
-          <button style={style}
-            onClick={this.togglePersonsHandler}>Switch Name</button>
-          {persons}
-        </div >
-      // </StyleRoot>
+      <div className="App">
+        <Cockpit
+          showPersons={this.state.showPersons}
+          persons={this.state.persons}
+          click={this.togglePersonsHandler} />
+        {persons}
+      </div >
     );
   }
 }
